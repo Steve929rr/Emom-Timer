@@ -37,32 +37,32 @@ function updateDisplay() {
 function startTimer() {
   if (running) return;
   running = true;
+
+  // Ensure timeLeft is set to duration if starting fresh
+  if (typeof timeLeft === "undefined" || timeLeft <= 0) {
+    timeLeft = duration;
+    updateDisplay();
+  }
+
   timerInterval = setInterval(() => {
     if (timeLeft > 0) {
       timeLeft--;
       updateDisplay();
-      
+
       if (timeLeft <= 5 && timeLeft > 0) {
-        // With audio files:
-        // softBeep.play();
-        // With Web Audio API:
         playSoftBeep();
       }
-   }
-   if (timeLeft === 0) {
-     // With audio files:
-     // loudBeep.play();
-     // With Web Audio API:
-     playLoudBeep();
+    } else if (timeLeft === 0) {
+      playLoudBeep();
 
-     // Advance to next round after a short delay
-    setTimeout(() => {
-      // Optionally increment a round counter here
-      timeLeft = duration;      // Reset for next round
-      updateDisplay();
-    }, 500); // delay to allow beep to play
-  }
-}, 1000);
+      setTimeout(() => {
+        // Optional: increment round count here
+        timeLeft = duration;
+        updateDisplay();
+      }, 500);
+    }
+  }, 1000);
+}
    
 
 function pauseTimer() {
