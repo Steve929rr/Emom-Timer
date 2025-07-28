@@ -54,9 +54,16 @@ function startTimer() {
      // loudBeep.play();
      // With Web Audio API:
      playLoudBeep();
-   }
-  }, 1000);
-}
+
+     // Advance to next round after a short delay
+    setTimeout(() => {
+      // Optionally increment a round counter here
+      timeLeft = duration;      // Reset for next round
+      updateDisplay();
+    }, 500); // delay to allow beep to play
+  }
+}, 1000);
+   
 
 function pauseTimer() {
   running = false;
