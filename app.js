@@ -19,7 +19,7 @@ function startTimer() {
       updateDisplay();
       if (timeLeft === 0) {
         // Optional: beep or alert
-        alert('Next round!');
+       // alert('Next round!');
         timeLeft = duration;
       }
     }
