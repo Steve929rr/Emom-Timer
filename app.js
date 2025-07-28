@@ -1,4 +1,28 @@
 // app.js
+// Option 1: Using audio files
+//const softBeep = new Audio('soft-beep.mp3');
+//const loudBeep = new Audio('loud-beep.mp3');
+
+// Option 2: Using Web Audio API for beeps (no files required)
+function playSoftBeep() {
+    const ctx = new(window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = 880;
+    osc.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+}
+function playLoudBeep() {
+    const ctx = new(window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = 1760;
+    osc.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.3);
+}
+
 let duration = 60; // seconds per round
 let timeLeft = duration;
 let timerInterval = null;
@@ -17,12 +41,20 @@ function startTimer() {
     if (timeLeft > 0) {
       timeLeft--;
       updateDisplay();
-      if (timeLeft === 0) {
-        // Optional: beep or alert
-       // alert('Next round!');
-        timeLeft = duration;
+      
+      if (timeLeft <= 5 && timeLeft > 0) {
+        // With audio files:
+        // softBeep.play();
+        // With Web Audio API:
+        playSoftBeep();
       }
-    }
+   }
+   if (timeLeft === 0) {
+     // With audio files:
+     // loudBeep.play();
+     // With Web Audio API:
+     playLoudBeep();
+   }
   }, 1000);
 }
 
