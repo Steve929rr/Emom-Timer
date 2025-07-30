@@ -8,9 +8,20 @@
 </head>
 <body>
   <h1>EMOM Timer</h1>
+
+  <div>
+    <label for="rounds">Total Rounds:</label>
+    <input type="number" id="rounds" min="1" value="5">
+
+    <label for="duration">Seconds per Round:</label>
+    <input type="number" id="duration" min="1" value="60">
+
+    <button onclick="initializeTimer()">Start Timer</button>
+  </div>
+
   <div id="timer">01:00</div>
-  <button id="start">Start</button>
-  <button id="pause">Pause</button>
+
   <script src="app.js"></script>
 </body>
+
 </html>
