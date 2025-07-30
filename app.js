@@ -40,9 +40,14 @@ function initializeTimer() {
   totalRounds = parseInt(document.getElementById('rounds').value);
   roundDuration = parseInt(document.getElementById('duration').value);
   currentRound = 1;
+  //document.getElementById('round-counter').textContent = `Round: ${currentRound}`;
+
   timeLeft = roundDuration;
   running = true;
 
+  // Set initial round display
+  document.getElementById('round-counter').textContent = `Round: ${currentRound}`;
+  updateDisplay();
   updateDisplay();
 
   timerInterval = setInterval(() => {
@@ -55,6 +60,8 @@ function initializeTimer() {
     } else {
       playLoudBeep();
       currentRound++;
+      document.getElementById('round-counter').textContent = `Round: ${currentRound}`;
+
 
       if (currentRound > totalRounds) {
         clearInterval(timerInterval);
