@@ -1,9 +1,5 @@
-// app.js
-// Option 1: Using audio files
-//const softBeep = new Audio('soft-beep.mp3');
-//const loudBeep = new Audio('loud-beep.mp3');
 
-// Option 2: Using Web Audio API for beeps (no files required)
+   // Option 2: Using Web Audio API for beeps (no files required)
 function playSoftBeep() {
     const ctx = new(window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
@@ -23,54 +19,62 @@ function playLoudBeep() {
     osc.stop(ctx.currentTime + 0.3);
 }
 
-let duration = 60; // seconds per round
-let timeLeft = duration;
+let timeLeft;
 let timerInterval = null;
 let running = false;
+let totalRounds = 0;
+let currentRound = 1;
+let roundDuration = 60;
 
 function updateDisplay() {
-  const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-  const seconds = String(timeLeft % 60).padStart(2, '0');
-  document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+  if (timeLeft >= 0) {
+    const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+    const seconds = String(timeLeft % 60).padStart(2, '0');
+    document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+  }
 }
 
-function startTimer() {
-  if (running) return;
+function initializeTimer() {
+  if (timerInterval) clearInterval(timerInterval); // Reset if already running
+
+  totalRounds = parseInt(document.getElementById('rounds').value);
+  roundDuration = parseInt(document.getElementById('duration').value);
+  currentRound = 1;
+  timeLeft = roundDuration;
   running = true;
 
-  // Ensure timeLeft is set to duration if starting fresh
-  if (typeof timeLeft === "undefined" || timeLeft <= 0) {
-    timeLeft = duration;
-    updateDisplay();
-  }
+  updateDisplay();
 
   timerInterval = setInterval(() => {
     if (timeLeft > 0) {
       timeLeft--;
       updateDisplay();
-
       if (timeLeft <= 5 && timeLeft > 0) {
         playSoftBeep();
       }
-    } else if (timeLeft === 0) {
+    } else {
       playLoudBeep();
+      currentRound++;
 
-      setTimeout(() => {
-        // Optional: increment round count here
-        timeLeft = duration;
+      if (currentRound > totalRounds) {
+        clearInterval(timerInterval);
+        running = false;
+        document.getElementById('timer').textContent = "DONE!";
+      } else {
+        timeLeft = roundDuration;
         updateDisplay();
-      }, 500);
+      }
     }
   }, 1000);
 }
-   
 
-function pauseTimer() {
-  running = false;
-  clearInterval(timerInterval);
-}
 
-document.getElementById('start').onclick = startTimer;
-document.getElementById('pause').onclick = pauseTimer;
+//function pauseTimer() {
+//  running = false;
+//  clearInterval(timerInterval);
+//}
 
-updateDisplay();
+//document.getElementById('start').onclick = startTimer;
+//document.getElementById('pause').onclick = pauseTimer;
+
+//updateDisplay();
