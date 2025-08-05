@@ -1,3 +1,4 @@
+
 import tkinter as tk
 import time
 import threading
@@ -5,8 +6,11 @@ import winsound
 
 # Settings
 ROUND_DURATION = 60
-BEEP_START = 55
+BEEP_START = ROUND_DURATION - 5
 ROUND_DISPLAY_TIME = 5
+
+# List of exercises to cycle through
+EXERCISES = ["Squat", "Push Up", "Box Jump", "Bent Over Row"]
 
 class EMOMTimer:
     def __init__(self, root):
@@ -17,7 +21,7 @@ class EMOMTimer:
         self.running = False
         self.round = 0
 
-        self.label = tk.Label(root, text="", font=("Courier", 180), fg="green", bg="black")
+        self.label = tk.Label(root, text="", font=("Courier", 120), fg="green", bg="black", wraplength=1000, justify="center")
         self.label.pack(expand=True)
 
         self.pause_button = tk.Button(root, text="Pause/Resume", font=("Courier", 20),
@@ -57,7 +61,10 @@ class EMOMTimer:
         threading.Thread(target=run).start()
 
     def show_round(self):
-        self.update_display(f"Round {self.round}", "white")
+        exercise_index = (self.round - 1) % len(EXERCISES)
+        exercise = EXERCISES[exercise_index]
+        display_text = f"Round {self.round}\n{exercise}"
+        self.update_display(display_text, "white")
         time.sleep(ROUND_DISPLAY_TIME)
 
     def update_display(self, text, color):
@@ -73,5 +80,3 @@ if __name__ == "__main__":
     app = EMOMTimer(root)
     app.start_timer()
     root.mainloop()
-
-# This is my first Git commit!
