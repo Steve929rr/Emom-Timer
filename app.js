@@ -7,6 +7,26 @@ function initAudioContext() {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
 }
+function playSoftBeep() {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.value = 880;
+  osc.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.1);
+}
+
+function playLoudBeep() {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.value = 1760;
+  osc.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.3);
+}
+
 
 let timeLeft;
 let timerInterval = null;
@@ -40,28 +60,33 @@ function initializeTimer() {
   updateDisplay();
 
   timerInterval = setInterval(() => {
+    console.log(`timeLeft: ${timeLeft}, currentRound: ${currentRound}, totalRounds: ${totalRounds}`);
+
     if (timeLeft > 0) {
       timeLeft--;
       updateDisplay();
       if (timeLeft <= 5 && timeLeft > 0) {
+        console.log("Playing soft beep");
         playSoftBeep();
       }
     } else {
+      console.log("Playing loud beep");
       playLoudBeep();
       currentRound++;
       document.getElementById('round-counter').textContent = `Round: ${currentRound}`;
-
 
       if (currentRound > totalRounds) {
         clearInterval(timerInterval);
         running = false;
         document.getElementById('timer').textContent = "DONE!";
+        console.log("Timer done");
       } else {
         timeLeft = roundDuration;
         updateDisplay();
       }
     }
   }, 1000);
+
 }
 
 document.getElementById('start-btn').addEventListener('click', () => {
