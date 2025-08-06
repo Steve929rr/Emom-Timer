@@ -1,25 +1,12 @@
 
    // Option 2: Using Web Audio API for beeps (no files required)
-function playSoftBeep() {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  osc.type = 'sine';
-  osc.frequency.value = 880;
-  osc.connect(audioCtx.destination);
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.1);
-}
+let audioCtx;
 
-function playLoudBeep() {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  osc.type = 'sine';
-  osc.frequency.value = 1760;
-  osc.connect(audioCtx.destination);
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.3);
+function initAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
 }
-
 
 let timeLeft;
 let timerInterval = null;
