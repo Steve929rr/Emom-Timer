@@ -1,23 +1,25 @@
 
    // Option 2: Using Web Audio API for beeps (no files required)
 function playSoftBeep() {
-    const ctx = new(window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.value = 880;
-    osc.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.1);
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.value = 880;
+  osc.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.1);
 }
+
 function playLoudBeep() {
-    const ctx = new(window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.value = 1760;
-    osc.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.3);
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.value = 1760;
+  osc.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.3);
 }
+
 
 let timeLeft;
 let timerInterval = null;
@@ -74,6 +76,12 @@ function initializeTimer() {
     }
   }, 1000);
 }
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  initAudioContext();    // Unlock audio on mobile
+  initializeTimer();     // Start timer
+});
+
 
 
 //function pauseTimer() {
