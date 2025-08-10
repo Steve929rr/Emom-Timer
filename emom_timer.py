@@ -10,7 +10,10 @@ BEEP_START = ROUND_DURATION - 5
 ROUND_DISPLAY_TIME = 5
 
 # List of exercises to cycle through
-EXERCISES = ["Squat", "Push Up", "Box Jump", "Bent Over Row"]
+# squat focused hyrox emom
+# EXERCISES = ["Jump Squat", "Push Up", "RDL", "Push, Press", "Farmers Walk", "Tempo Squat"]
+# mobility and core workout
+EXERCISES = ["Dead Bug", "Glute Bridge", "Side Steps", "Step-ups", "RDLs", "Prone Y Raises", "OHP"]
 
 class EMOMTimer:
     def __init__(self, root):
@@ -67,6 +70,8 @@ class EMOMTimer:
         self.update_display(display_text, "white")
         time.sleep(ROUND_DISPLAY_TIME)
 
+
+
     def update_display(self, text, color):
         self.label.config(text=text, fg=color)
         self.root.update()
@@ -80,3 +85,6 @@ if __name__ == "__main__":
     app = EMOMTimer(root)
     app.start_timer()
     root.mainloop()
+
+print("Starting EMOM timer...")
+
